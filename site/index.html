@@ -1,52 +1,1422 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>REMOTE</title>
-  <link rel="stylesheet" href="/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>REMOTE</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    :root {
+        --bg: #090b0e;
+        --card: #11151a;
+        --card2: #151a20;
+        --border: #252c35;
+        --border2: #323a46;
+        --text: #f5f7fa;
+        --muted: #8e98a6;
+        --white: #ffffff;
+        --danger: #ff5964;
+        --success: #5ee59b;
+    }
+
+    body {
+        min-height: 100vh;
+        background:
+            radial-gradient(
+                circle at top,
+                #171c23 0%,
+                #0c0f13 35%,
+                var(--bg) 70%
+            );
+
+        color: var(--text);
+
+        font-family:
+            Inter,
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            Roboto,
+            Arial,
+            sans-serif;
+    }
+
+    button,
+    input {
+        font: inherit;
+    }
+
+    button {
+        border: 0;
+        cursor: pointer;
+    }
+
+    .container {
+        width: min(1080px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 40px 0 80px;
+    }
+
+    header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 28px;
+    }
+
+    .brand h1 {
+        font-size: 38px;
+        letter-spacing: 4px;
+        font-weight: 900;
+    }
+
+    .brand p {
+        color: var(--muted);
+        margin-top: 5px;
+        font-size: 14px;
+    }
+
+    .online {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--success);
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .online-dot {
+        width: 8px;
+        height: 8px;
+        background: var(--success);
+        border-radius: 50%;
+        box-shadow: 0 0 15px var(--success);
+    }
+
+    .card {
+        background: rgba(17, 21, 26, 0.95);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 22px;
+        margin-bottom: 18px;
+        box-shadow:
+            0 18px 45px rgba(0, 0, 0, 0.24);
+    }
+
+    .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .card h2 {
+        font-size: 18px;
+        font-weight: 800;
+    }
+
+    .card-subtitle {
+        color: var(--muted);
+        font-size: 13px;
+        margin-top: 4px;
+    }
+
+    .row {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: 1.5fr .7fr 1fr;
+        gap: 12px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="password"] {
+        width: 100%;
+        background: #0b0e12;
+        border: 1px solid var(--border2);
+        color: white;
+        border-radius: 11px;
+        outline: none;
+        padding: 13px 14px;
+        transition: .2s;
+    }
+
+    input:focus {
+        border-color: #626d7c;
+        box-shadow: 0 0 0 3px rgba(255,255,255,.04);
+    }
+
+    .btn {
+        padding: 12px 17px;
+        border-radius: 11px;
+        font-weight: 800;
+        transition: .18s;
+        white-space: nowrap;
+    }
+
+    .btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .btn-primary {
+        background: var(--white);
+        color: #090b0e;
+    }
+
+    .btn-secondary {
+        background: #20262e;
+        color: white;
+        border: 1px solid #303843;
+    }
+
+    .btn-danger {
+        background: rgba(255,89,100,.12);
+        color: #ff7a83;
+        border: 1px solid rgba(255,89,100,.22);
+    }
+
+    .switch-area {
+        margin-top: 20px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+
+    .switch-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        min-height: 65px;
+
+        background: var(--card2);
+        border: 1px solid var(--border);
+        border-radius: 13px;
+
+        padding: 14px 16px;
+    }
+
+    .switch-name {
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .switch {
+        position: relative;
+        width: 46px;
+        height: 25px;
+        flex: none;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        inset: 0;
+
+        background: #353c46;
+        border-radius: 30px;
+
+        transition: .2s;
+    }
+
+    .slider:before {
+        content: "";
+
+        position: absolute;
+        width: 19px;
+        height: 19px;
+
+        left: 3px;
+        top: 3px;
+
+        background: white;
+        border-radius: 50%;
+
+        transition: .2s;
+    }
+
+    .switch input:checked + .slider {
+        background: white;
+    }
+
+    .switch input:checked + .slider:before {
+        transform: translateX(21px);
+        background: #090b0e;
+    }
+
+    .save-row {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 18px;
+    }
+
+    #status {
+        color: var(--muted);
+        font-size: 13px;
+        margin-bottom: 12px;
+    }
+
+    .client {
+        background: #0c0f13;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        margin-top: 10px;
+        overflow: hidden;
+    }
+
+    .client-main {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 20px;
+        padding: 18px;
+    }
+
+    .client-ip {
+        font-size: 16px;
+        font-weight: 800;
+    }
+
+    .client-info {
+        color: var(--muted);
+        font-size: 12px;
+        margin-top: 5px;
+        line-height: 1.7;
+    }
+
+    .client-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    .client-switches {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+
+        padding: 13px 18px;
+
+        border-top: 1px solid var(--border);
+        background: #101419;
+    }
+
+    .mini-setting {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        background: #181d23;
+        border: 1px solid #282f38;
+
+        border-radius: 9px;
+
+        padding: 8px 11px;
+
+        font-size: 12px;
+    }
+
+    .mini-setting input {
+        accent-color: white;
+    }
+
+    .freeze-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .empty {
+        border: 1px dashed var(--border2);
+        border-radius: 13px;
+
+        padding: 30px;
+        text-align: center;
+
+        color: var(--muted);
+    }
+
+    .token-info {
+        margin-top: 9px;
+        font-size: 11px;
+        color: var(--muted);
+    }
+
+    .message {
+        position: fixed;
+
+        bottom: 25px;
+        right: 25px;
+
+        background: #f5f7fa;
+        color: #090b0e;
+
+        border-radius: 11px;
+        padding: 13px 17px;
+
+        font-weight: 700;
+        font-size: 13px;
+
+        opacity: 0;
+        pointer-events: none;
+
+        transform: translateY(10px);
+
+        transition: .2s;
+
+        box-shadow:
+            0 15px 35px rgba(0,0,0,.4);
+
+        z-index: 999;
+    }
+
+    .message.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    @media (max-width: 800px) {
+
+        .grid {
+            grid-template-columns: 1fr;
+        }
+
+        .switch-area {
+            grid-template-columns: 1fr;
+        }
+
+        header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .client-main {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .client-actions {
+            width: 100%;
+        }
+
+        .client-actions button {
+            flex: 1;
+        }
+
+        .token-row {
+            flex-direction: column;
+            align-items: stretch;
+        }
+    }
+</style>
 </head>
+
 <body>
-  <main class="wrap">
+
+<div class="container">
+
     <header>
-      <div><h1>REMOTE</h1><p>Clientes, validade e configurações</p></div>
-      <button id="refresh">Atualizar</button>
+
+        <div class="brand">
+
+            <h1>REMOTE</h1>
+
+            <p>
+                Proxy Remote Control
+            </p>
+
+        </div>
+
+        <div class="online">
+
+            <span class="online-dot"></span>
+
+            API ONLINE
+
+        </div>
+
     </header>
 
-    <section class="card">
-      <h2>Acesso</h2>
-      <div class="row">
-        <input id="token" type="password" placeholder="REMOTE_ADMIN_TOKEN">
-        <button id="saveToken">Usar token</button>
-      </div>
-      <small>O token fica somente nesta sessão do navegador.</small>
-    </section>
+
+    <!-- TOKEN -->
 
     <section class="card">
-      <h2>Novo / atualizar cliente</h2>
-      <div class="grid">
-        <input id="ipv4" placeholder="IPv4 público">
-        <input id="days" type="number" min="1" value="30" placeholder="Dias">
-        <input id="profile" value="default" placeholder="Profile">
-        <label class="check"><input id="enabled" type="checkbox" checked> Ativo</label>
-      </div>
-      <div class="switches">
-        <label><input data-setting="option1" type="checkbox"> Opção 1</label>
-        <label><input data-setting="option2" type="checkbox"> Opção 2</label>
-        <label><input data-setting="option3" type="checkbox"> Opção 3</label>
-      </div>
-      <button id="saveClient">Salvar cliente</button>
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>Acesso administrativo</h2>
+
+                <div class="card-subtitle">
+                    Conecte o painel ao backend.
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row token-row">
+
+            <input
+                id="token"
+                type="password"
+                placeholder="REMOTE_ADMIN_TOKEN"
+            >
+
+            <button
+                id="saveToken"
+                class="btn btn-primary"
+            >
+                Conectar
+            </button>
+
+        </div>
+
+        <div class="token-info">
+            O token permanece apenas nesta sessão do navegador.
+        </div>
+
     </section>
 
+
+    <!-- CLIENT -->
+
     <section class="card">
-      <div class="row between">
-        <h2>Clientes</h2>
-        <label class="check"><input id="freeze" type="checkbox"> Freeze global</label>
-      </div>
-      <div id="status"></div>
-      <div id="clients"></div>
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>Novo cliente</h2>
+
+                <div class="card-subtitle">
+                    IPv4, validade, profile e configurações.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="grid">
+
+            <input
+                id="ipv4"
+                type="text"
+                placeholder="IPv4 público"
+            >
+
+            <input
+                id="days"
+                type="number"
+                min="1"
+                value="30"
+                placeholder="Dias"
+            >
+
+            <input
+                id="profile"
+                type="text"
+                value="default"
+                placeholder="Profile"
+            >
+
+        </div>
+
+
+        <div class="switch-area">
+
+            <div class="switch-card">
+
+                <span class="switch-name">
+                    Opção 1
+                </span>
+
+                <label class="switch">
+
+                    <input
+                        type="checkbox"
+                        data-setting="option1"
+                    >
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+
+            <div class="switch-card">
+
+                <span class="switch-name">
+                    Opção 2
+                </span>
+
+                <label class="switch">
+
+                    <input
+                        type="checkbox"
+                        data-setting="option2"
+                    >
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+
+            <div class="switch-card">
+
+                <span class="switch-name">
+                    Opção 3
+                </span>
+
+                <label class="switch">
+
+                    <input
+                        type="checkbox"
+                        data-setting="option3"
+                    >
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <div class="save-row">
+
+            <button
+                id="saveClient"
+                class="btn btn-primary"
+            >
+                Salvar cliente
+            </button>
+
+        </div>
+
     </section>
-  </main>
-  <script src="/app.js"></script>
+
+
+    <!-- CLIENT LIST -->
+
+    <section class="card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>Clientes</h2>
+
+                <div class="card-subtitle">
+                    Controle em tempo real.
+                </div>
+
+            </div>
+
+
+            <div class="freeze-wrap">
+
+                Freeze
+
+                <label class="switch">
+
+                    <input
+                        id="freeze"
+                        type="checkbox"
+                    >
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <div id="status">
+            Aguardando conexão...
+        </div>
+
+
+        <div id="clients">
+
+            <div class="empty">
+                Nenhum cliente carregado.
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<div
+    id="message"
+    class="message"
+></div>
+
+
+<script>
+
+const $ = selector =>
+    document.querySelector(selector);
+
+
+let token =
+    sessionStorage.getItem(
+        "remote_admin_token"
+    ) || "";
+
+
+$("#token").value = token;
+
+
+
+function authHeaders(json = false) {
+
+    const headers = {
+        Authorization:
+            `Bearer ${token}`
+    };
+
+    if (json) {
+
+        headers["Content-Type"] =
+            "application/json";
+
+    }
+
+    return headers;
+}
+
+
+
+async function api(
+    path,
+    options = {}
+) {
+
+    const response =
+        await fetch(
+            path,
+            options
+        );
+
+
+    const data =
+        await response
+            .json()
+            .catch(() => ({}));
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            data.error ||
+            `HTTP ${response.status}`
+        );
+
+    }
+
+
+    return data;
+
+}
+
+
+
+function toast(text) {
+
+    const element =
+        $("#message");
+
+
+    element.textContent =
+        text;
+
+
+    element.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        window.__toastTimer
+    );
+
+
+    window.__toastTimer =
+        setTimeout(
+            () => {
+
+                element.classList.remove(
+                    "show"
+                );
+
+            },
+            2500
+        );
+
+}
+
+
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replace(
+            /[&<>"']/g,
+            char => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#039;"
+            })[char]
+        );
+
+}
+
+
+
+function formatDate(timestamp) {
+
+    if (!timestamp)
+        return "Sem validade";
+
+
+    return new Date(
+        timestamp * 1000
+    ).toLocaleString(
+        "pt-BR"
+    );
+
+}
+
+
+
+async function loadClients() {
+
+    if (!token) {
+
+        $("#status").textContent =
+            "Informe o token administrativo.";
+
+        return;
+
+    }
+
+
+    try {
+
+        const data =
+            await api(
+                "/api/admin/clients",
+                {
+                    headers:
+                        authHeaders()
+                }
+            );
+
+
+        $("#freeze").checked =
+            Boolean(
+                data.frozen
+            );
+
+
+        const clients =
+            data.clients || [];
+
+
+        $("#status").textContent =
+            `${clients.length} cliente(s) conectado(s) ao painel.`;
+
+
+        if (!clients.length) {
+
+            $("#clients").innerHTML =
+                `
+                <div class="empty">
+                    Nenhum cliente cadastrado.
+                </div>
+                `;
+
+            return;
+
+        }
+
+
+        $("#clients").innerHTML =
+            clients.map(
+                client => {
+
+                    const settings =
+                        client.settings || {};
+
+
+                    const switches =
+                        Object.entries(
+                            settings
+                        )
+                        .map(
+                            ([key, value]) => `
+                            <label class="mini-setting">
+
+                                <input
+                                    type="checkbox"
+                                    data-client-setting
+                                    data-ip="${escapeHtml(client.ipv4)}"
+                                    data-key="${escapeHtml(key)}"
+                                    ${value ? "checked" : ""}
+                                >
+
+                                ${escapeHtml(key)}
+
+                            </label>
+                            `
+                        )
+                        .join("");
+
+
+                    return `
+                    <article class="client">
+
+                        <div class="client-main">
+
+                            <div>
+
+                                <div class="client-ip">
+                                    ${escapeHtml(client.ipv4)}
+                                </div>
+
+                                <div class="client-info">
+
+                                    ${
+                                        client.enabled
+                                            ? "ATIVO"
+                                            : "DESATIVADO"
+                                    }
+
+                                    <br>
+
+                                    Validade:
+                                    ${formatDate(client.expires_at)}
+
+                                    <br>
+
+                                    Profile:
+                                    ${escapeHtml(client.active_profile)}
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="client-actions">
+
+                                <button
+                                    class="btn btn-secondary"
+                                    data-toggle-client="${escapeHtml(client.ipv4)}"
+                                    data-enabled="${client.enabled ? "1" : "0"}"
+                                >
+
+                                    ${
+                                        client.enabled
+                                            ? "Desativar"
+                                            : "Ativar"
+                                    }
+
+                                </button>
+
+
+                                <button
+                                    class="btn btn-danger"
+                                    data-delete-client="${escapeHtml(client.ipv4)}"
+                                >
+                                    Excluir
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="client-switches">
+
+                            ${
+                                switches ||
+                                '<span class="client-info">Nenhuma configuração.</span>'
+                            }
+
+                        </div>
+
+                    </article>
+                    `;
+
+                }
+            )
+            .join("");
+
+
+    } catch (error) {
+
+        $("#status").textContent =
+            `Erro: ${error.message}`;
+
+    }
+
+}
+
+
+
+$("#saveToken")
+.addEventListener(
+    "click",
+    async () => {
+
+        token =
+            $("#token")
+                .value
+                .trim();
+
+
+        if (!token) {
+
+            toast(
+                "Informe o token."
+            );
+
+            return;
+
+        }
+
+
+        sessionStorage.setItem(
+            "remote_admin_token",
+            token
+        );
+
+
+        toast(
+            "Token carregado."
+        );
+
+
+        await loadClients();
+
+    }
+);
+
+
+
+$("#saveClient")
+.addEventListener(
+    "click",
+    async () => {
+
+        try {
+
+            const ipv4 =
+                $("#ipv4")
+                    .value
+                    .trim();
+
+
+            if (!ipv4) {
+
+                toast(
+                    "Informe o IPv4."
+                );
+
+                return;
+
+            }
+
+
+            const days =
+                Math.max(
+                    1,
+                    Number(
+                        $("#days").value
+                    ) || 30
+                );
+
+
+            const expires_at =
+                Math.floor(
+                    Date.now() / 1000
+                ) +
+                (
+                    days *
+                    86400
+                );
+
+
+            const settings = {};
+
+
+            document
+                .querySelectorAll(
+                    "[data-setting]"
+                )
+                .forEach(
+                    element => {
+
+                        settings[
+                            element.dataset.setting
+                        ] =
+                            element.checked;
+
+                    }
+                );
+
+
+            await api(
+                "/api/admin/clients",
+                {
+
+                    method:
+                        "POST",
+
+                    headers:
+                        authHeaders(true),
+
+                    body:
+                        JSON.stringify({
+
+                            ipv4,
+
+                            enabled:
+                                true,
+
+                            expires_at,
+
+                            active_profile:
+                                $("#profile")
+                                    .value
+                                    .trim() ||
+                                "default",
+
+                            settings
+
+                        })
+
+                }
+            );
+
+
+            toast(
+                "Cliente salvo."
+            );
+
+
+            $("#ipv4").value =
+                "";
+
+
+            await loadClients();
+
+
+        } catch (error) {
+
+            toast(
+                error.message
+            );
+
+        }
+
+    }
+);
+
+
+
+$("#freeze")
+.addEventListener(
+    "change",
+    async event => {
+
+        try {
+
+            await api(
+                "/api/admin/freeze",
+                {
+
+                    method:
+                        "POST",
+
+                    headers:
+                        authHeaders(true),
+
+                    body:
+                        JSON.stringify({
+
+                            frozen:
+                                event.target.checked
+
+                        })
+
+                }
+            );
+
+
+            toast(
+                event.target.checked
+                    ? "Freeze ativado."
+                    : "Freeze desativado."
+            );
+
+
+        } catch (error) {
+
+            event.target.checked =
+                !event.target.checked;
+
+
+            toast(
+                error.message
+            );
+
+        }
+
+    }
+);
+
+
+
+$("#clients")
+.addEventListener(
+    "change",
+    async event => {
+
+        const element =
+            event.target;
+
+
+        if (
+            !element.matches(
+                "[data-client-setting]"
+            )
+        )
+            return;
+
+
+        const ip =
+            element.dataset.ip;
+
+
+        const key =
+            element.dataset.key;
+
+
+        try {
+
+            await api(
+                `/api/admin/clients/${encodeURIComponent(ip)}/settings`,
+                {
+
+                    method:
+                        "PATCH",
+
+                    headers:
+                        authHeaders(true),
+
+                    body:
+                        JSON.stringify({
+
+                            settings: {
+
+                                [key]:
+                                    element.checked
+
+                            }
+
+                        })
+
+                }
+            );
+
+
+            toast(
+                `${key}: ${
+                    element.checked
+                        ? "ON"
+                        : "OFF"
+                }`
+            );
+
+
+        } catch (error) {
+
+            element.checked =
+                !element.checked;
+
+
+            toast(
+                error.message
+            );
+
+        }
+
+    }
+);
+
+
+
+$("#clients")
+.addEventListener(
+    "click",
+    async event => {
+
+        const toggle =
+            event.target.closest(
+                "[data-toggle-client]"
+            );
+
+
+        const remove =
+            event.target.closest(
+                "[data-delete-client]"
+            );
+
+
+        try {
+
+
+            if (toggle) {
+
+                const ip =
+                    toggle.dataset
+                        .toggleClient;
+
+
+                const enabled =
+                    toggle.dataset
+                        .enabled !== "1";
+
+
+                await api(
+                    `/api/admin/clients/${encodeURIComponent(ip)}`,
+                    {
+
+                        method:
+                            "PATCH",
+
+                        headers:
+                            authHeaders(true),
+
+                        body:
+                            JSON.stringify({
+                                enabled
+                            })
+
+                    }
+                );
+
+
+                toast(
+                    enabled
+                        ? "Cliente ativado."
+                        : "Cliente desativado."
+                );
+
+
+                await loadClients();
+
+            }
+
+
+
+            if (remove) {
+
+                const ip =
+                    remove.dataset
+                        .deleteClient;
+
+
+                const confirmed =
+                    confirm(
+                        `Excluir cliente ${ip}?`
+                    );
+
+
+                if (!confirmed)
+                    return;
+
+
+                await api(
+                    `/api/admin/clients/${encodeURIComponent(ip)}`,
+                    {
+
+                        method:
+                            "DELETE",
+
+                        headers:
+                            authHeaders()
+
+                    }
+                );
+
+
+                toast(
+                    "Cliente excluído."
+                );
+
+
+                await loadClients();
+
+            }
+
+
+        } catch (error) {
+
+            toast(
+                error.message
+            );
+
+        }
+
+    }
+);
+
+
+
+if (token) {
+
+    loadClients();
+
+}
+
+</script>
+
 </body>
 </html>
