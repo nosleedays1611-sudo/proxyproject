@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>REMOTE</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <div><h1>REMOTE</h1><p>Clientes, validade e configurações</p></div>
+      <button id="refresh">Atualizar</button>
+    </header>
+
+    <section class="card">
+      <h2>Acesso</h2>
+      <div class="row">
+        <input id="token" type="password" placeholder="REMOTE_ADMIN_TOKEN">
+        <button id="saveToken">Usar token</button>
+      </div>
+      <small>O token fica somente nesta sessão do navegador.</small>
+    </section>
+
+    <section class="card">
+      <h2>Novo / atualizar cliente</h2>
+      <div class="grid">
+        <input id="ipv4" placeholder="IPv4 público">
+        <input id="days" type="number" min="1" value="30" placeholder="Dias">
+        <input id="profile" value="default" placeholder="Profile">
+        <label class="check"><input id="enabled" type="checkbox" checked> Ativo</label>
+      </div>
+      <div class="switches">
+        <label><input data-setting="option1" type="checkbox"> Opção 1</label>
+        <label><input data-setting="option2" type="checkbox"> Opção 2</label>
+        <label><input data-setting="option3" type="checkbox"> Opção 3</label>
+      </div>
+      <button id="saveClient">Salvar cliente</button>
+    </section>
+
+    <section class="card">
+      <div class="row between">
+        <h2>Clientes</h2>
+        <label class="check"><input id="freeze" type="checkbox"> Freeze global</label>
+      </div>
+      <div id="status"></div>
+      <div id="clients"></div>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

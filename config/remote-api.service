@@ -1,0 +1,16 @@
+[Unit]
+Description=REMOTE API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/remote
+EnvironmentFile=/opt/remote/.env
+ExecStart=/opt/remote/venv/bin/gunicorn --workers 2 --bind 127.0.0.1:8080 backend.app:app
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

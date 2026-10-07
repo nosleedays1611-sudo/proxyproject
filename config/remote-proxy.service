@@ -1,0 +1,17 @@
+[Unit]
+Description=REMOTE Proxy
+After=network-online.target remote-api.service
+Wants=network-online.target
+Requires=remote-api.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/remote
+EnvironmentFile=/opt/remote/.env
+ExecStart=/opt/remote/venv/bin/mitmdump -s /opt/remote/proxy.py --listen-host 0.0.0.0 --listen-port 9999 --set block_global=false --set confdir=/opt/remote/mitmproxy-conf
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
